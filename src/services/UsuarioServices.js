@@ -83,7 +83,7 @@ const InicioDeSesion = async (user) => {
 
 const ActualizarUsuario = async (usuarioId, user) => {
   const databaseUser = await ObtenerUsuarioPorEmail(user.email);
-
+  
   const userRegistered = {
     user_id: usuarioId,
     email: user.email,

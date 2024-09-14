@@ -6,7 +6,7 @@ const authToken = require("../utils/Autenticacion")
 
 router.post("/", usersController.RegistrarUsuario)
 
-router.post("/auth/login", usersController.InicioDeSesion)
+router.post("/inicio-sesion", usersController.InicioDeSesion)
 
 router.get("/", authToken,  usersController.ObtenerUsuarios)
 
