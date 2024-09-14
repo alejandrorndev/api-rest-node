@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require("express");
 const UsuariosRouter = require('./routes/UsuariosRoutes');
 const EventosRouter = require('./routes/EventosRoutes');
+const AsistenteRouter = require('./routes/AsistentesRoutes');
+
 
 
 
@@ -13,6 +15,8 @@ app.use(express.json());
 
 app.use("/api/usuarios", UsuariosRouter)
 app.use("/api/eventos", EventosRouter)
+app.use("/api/asistentes", AsistenteRouter)
+
 
 
 
