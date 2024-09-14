@@ -11,9 +11,9 @@ router.get("/asistencia-diaria", authToken, AsistenteController.ObtenerAsistenci
 
 router.get("/:asistenteId", authToken, AsistenteController.ObtenerAsistente)
 
-router.get("/usuario/:userId", authToken, AsistenteController.ObtenerAsistentesPorUsuario)
+router.get("/usuario/:usuarioId", authToken, AsistenteController.ObtenerAsistentesPorUsuario)
 
-router.get("/evento/:eventId", authToken, AsistenteController.ObtenerAsistentesPorEvento)
+router.get("/evento/:eventoId", authToken, AsistenteController.ObtenerAsistentesPorEvento)
 
 router.put("/:asistenteId", authToken, AsistenteController.ActualizarAsistente)
 

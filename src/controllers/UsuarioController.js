@@ -16,8 +16,8 @@ const ObtenerUsuarios = async (req,res) => {
 const ObtenerUsuario = async (req,res) => {
 
     try{
-        const { userId } = req.params
-        const result = await services.ObtenerUsuario(userId);
+        const { usuarioId } = req.params
+        const result = await services.ObtenerUsuario(usuarioId);
         res.json(result)
     } catch (error){
         res.status(500);
@@ -57,14 +57,14 @@ const InicioDeSesion = async (req,res) => {
 
 const ActualizarUsuario =  (req,res) => {
 
-    services.ActualizarUsuario(req.params.userId, req.body)
+    services.ActualizarUsuario(req.params.usuarioId, req.body)
 
     res.send( { status: 'OK', data: req.body})
 }
 
 const EliminarUsuario = (req,res) => {
     try {
-        services.EliminarUsuario(req.params.userId)
+        services.EliminarUsuario(req.params.usuarioId)
         res.send( { status: 'OK', data: "Usuario eliminado exitosamente"})
 
       } catch (e) {

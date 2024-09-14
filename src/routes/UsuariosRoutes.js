@@ -10,11 +10,11 @@ router.post("/auth/login", usersController.InicioDeSesion)
 
 router.get("/", authToken,  usersController.ObtenerUsuarios)
 
-router.get("/:userId", authToken, usersController.ObtenerUsuario)
+router.get("/:usuarioId", authToken, usersController.ObtenerUsuario)
 
-router.put("/:userId", authToken, usersController.ActualizarUsuario)
+router.put("/:usuarioId", authToken, usersController.ActualizarUsuario)
 
-router.delete("/:userId", authToken, usersController.EliminarUsuario);
+router.delete("/:usuarioId", authToken, usersController.EliminarUsuario);
 
 
 

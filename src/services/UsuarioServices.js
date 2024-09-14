@@ -8,11 +8,11 @@ const ObtenerUsuarios = async () => {
   return result;
 };
 
-const ObtenerUsuario = async (userId) => {
+const ObtenerUsuario = async (usuarioId) => {
   const connection = await getConnection();
   const result = await connection.query(
     "SELECT * FROM users WHERE user_id = ?",
-    [userId]
+    [usuarioId]
   );
   return result;
 };
@@ -81,11 +81,11 @@ const InicioDeSesion = async (user) => {
   return "Usuario no encontrado";
 };
 
-const ActualizarUsuario = async (userId, user) => {
+const ActualizarUsuario = async (usuarioId, user) => {
   const databaseUser = await ObtenerUsuarioPorEmail(user.email);
 
   const userRegistered = {
-    user_id: userId,
+    user_id: usuarioId,
     email: user.email,
     password: await bcrypt.encrypt(user.password),
     name: user.name,
@@ -94,14 +94,14 @@ const ActualizarUsuario = async (userId, user) => {
 
   const sql = `UPDATE users SET ? WHERE user_id = ?`;
   const connection = await getConnection();
-  connection.query(sql, [userRegistered, userId]);
-  console.log("Usuario actualizado exitosamente ID:", userId);
+  connection.query(sql, [userRegistered, usuarioId]);
+  console.log("Usuario actualizado exitosamente ID:", usuarioId);
 };
-const EliminarUsuario = async (userId) => {
+const EliminarUsuario = async (usuarioId) => {
   const sql = `DELETE FROM users WHERE user_id = ?`;
   const connection = await getConnection();
-  connection.query(sql, userId);
-  console.log("Usuario eliminado exitosamente, ID:", userId);
+  connection.query(sql, usuarioId);
+  console.log("Usuario eliminado exitosamente, ID:", usuarioId);
 };
 
 module.exports = {

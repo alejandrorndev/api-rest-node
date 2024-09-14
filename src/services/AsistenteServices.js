@@ -10,10 +10,10 @@ const ObtenerAsistentes = async() => {
 
 } 
 
-const ObtenerAsistentesPorEvento = async (eventId) => {
+const ObtenerAsistentesPorEvento = async (eventoId) => {
 
     const connection = await getConnection();
-    const resultado = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventId]);
+    const resultado = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventoId]);
     return resultado
 
   };
@@ -28,10 +28,10 @@ return resultado
 };
 
 
-const ObtenerAsistentesPorUsuario = async (userId) => {
+const ObtenerAsistentesPorUsuario = async (usuarioId) => {
 
     const connection = await getConnection();
-    const resultado = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [userId]);
+    const resultado = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [usuarioId]);
     return resultado
     
 };
@@ -39,12 +39,12 @@ const ObtenerAsistentesPorUsuario = async (userId) => {
 const RegistrarAsistente = async (assistance) => { 
 
     const assistanceToRegister = {
-        event_id: assistance.eventId,
-        user_id: assistance.userId,
+        event_id: assistance.eventoId,
+        user_id: assistance.usuarioId,
         date: assistance.date
     }
 
-    const event = (await eventService.getEvent(assistance.eventId))[0]
+    const event = (await eventService.getEvent(assistance.eventoId))[0]
 
     //console.log(event)
 
@@ -78,8 +78,8 @@ const RegistrarAsistente = async (assistance) => {
 const ActualizarAsistente = async (asistenteId, assistance) => { 
 
     const assistanceToRegister ={
-        event_id: assistance.eventId,
-        user_id: assistance.userId,
+        event_id: assistance.eventoId,
+        user_id: assistance.usuarioId,
         date: assistance.date
     }
     const sql = `UPDATE assistance SET ? WHERE assistance_id = ?`;

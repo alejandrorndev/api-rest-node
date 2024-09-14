@@ -15,8 +15,8 @@ const ObtenerEventos = async (req,res) => {
 const ObtenerEvento = async (req,res) => {
     
     try{
-        const { eventId } = req.params
-        const result = await EventoServices.ObtenerEvento(eventId);
+        const { eventoId } = req.params
+        const result = await EventoServices.ObtenerEvento(eventoId);
         res.send( { status: 'OK', data: result})
     } catch (error){
         res.status(500);
@@ -40,8 +40,8 @@ const UbicacionesCercanas = async (req,res) => {
 const ObtenerUbicacionesCercanasAlEvento = async (req,res) => {
 
   try{
-      const { eventId, range } = req.body
-      const event = await EventoServices.ObtenerEvento(eventId)
+      const { eventoId, range } = req.body
+      const event = await EventoServices.ObtenerEvento(eventoId)
 
       if (event.length === 0) {
         return res.status(404).json({ message: "El evento no existe" });
@@ -90,9 +90,9 @@ const ActualizarEvento = (req,res) => {
 
     try {
 
-        const { eventId } = req.params
+        const { eventoId } = req.params
         const event  = req.body
-        EventoServices.ActualizarEvento(eventId, event)
+        EventoServices.ActualizarEvento(eventoId, event)
         res.send( { status: 'OK', data: event})
 
       } catch (e) {
@@ -106,8 +106,8 @@ const EliminarEvento = (req,res) => {
 
      try {
 
-        const { eventId } = req.params
-        EventoServices.EliminarEvento(eventId)
+        const { eventoId } = req.params
+        EventoServices.EliminarEvento(eventoId)
         res.send( { status: 'OK', data: "Evento eliminado exitosamente"})
 
       } catch (e) {

@@ -29,8 +29,8 @@ const ObtenerAsistente = async (req,res) => {
 const ObtenerAsistentesPorEvento = async (req,res) => {
     
   try{
-      const { eventId } = req.params
-      const resultado = await services.ObtenerAsistentesPorEvento(eventId);
+      const { eventoId } = req.params
+      const resultado = await services.ObtenerAsistentesPorEvento(eventoId);
       res.send( { status: 'OK', data: resultado})
   } catch (error){
       res.status(500);
@@ -42,8 +42,8 @@ const ObtenerAsistentesPorEvento = async (req,res) => {
 const ObtenerAsistentesPorUsuario = async (req,res) => {
     
   try{
-      const { userId } = req.params
-      const resultado = await services.ObtenerAsistentesPorUsuario(userId);
+      const { usuarioId } = req.params
+      const resultado = await services.ObtenerAsistentesPorUsuario(usuarioId);
       res.send( { status: 'OK', data: resultado})
   } catch (error){
       res.status(500);

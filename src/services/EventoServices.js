@@ -10,10 +10,10 @@ const ObtenerEventos = async () => {
     return result
 
 } 
-const ObtenerEvento = async (eventId) => {
+const ObtenerEvento = async (eventoId) => {
 
     const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventId]);
+    const result = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
     return result
 }
 const CrearEvento = async (event) => { 
@@ -78,7 +78,7 @@ const CreacionMasivaEventos = async (file) => {
 
 }
 
-const ActualizarEvento = async (eventId, event) => { 
+const ActualizarEvento = async (eventoId, event) => { 
 
 
     const dateToday = Date.now();
@@ -100,8 +100,8 @@ const ActualizarEvento = async (eventId, event) => {
 
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
         const connection = await getConnection();
-        connection.query(sql, [eventToRegister, eventId])
-        console.log("Evento actualizado exitosamente ID:", eventId)
+        connection.query(sql, [eventToRegister, eventoId])
+        console.log("Evento actualizado exitosamente ID:", eventoId)
     } else {
         const eventToRegister = {
             user_id: user[0].user_id,
@@ -115,8 +115,8 @@ const ActualizarEvento = async (eventId, event) => {
 
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
         const connection = await getConnection();
-        connection.query(sql, [eventToRegister, eventId])
-        console.log("Evento actualizado exitosamente ID:", eventId)
+        connection.query(sql, [eventToRegister, eventoId])
+        console.log("Evento actualizado exitosamente ID:", eventoId)
 
     }
     
@@ -124,11 +124,11 @@ const ActualizarEvento = async (eventId, event) => {
 
 
 } 
-const EliminarEvento =  async (eventId) => { 
+const EliminarEvento =  async (eventoId) => { 
     const sql = `DELETE FROM events WHERE event_id = ?`;
     const connection = await getConnection();
-    connection.query(sql, eventId)
-    console.log("Evento eliminado exitosamente, ID:", eventId)
+    connection.query(sql, eventoId)
+    console.log("Evento eliminado exitosamente, ID:", eventoId)
 }
 
 

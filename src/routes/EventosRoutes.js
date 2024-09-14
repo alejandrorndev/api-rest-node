@@ -14,7 +14,7 @@ router.post("/", authToken, eventsController.CrearEvento)
 router.get("/", authToken, eventsController.ObtenerEventos)
 
 
-router.get("/:eventId", authToken, eventsController.ObtenerEvento)
+router.get("/:eventoId", authToken, eventsController.ObtenerEvento)
 
 
 router.post("/lugares-cercanos", authToken, eventsController.UbicacionesCercanas)
@@ -26,10 +26,10 @@ router.post("/lugares-cercanos-al-evento", authToken, eventsController.ObtenerUb
 router.post("/cargue-masivo", authToken, upload.single('file'),  eventsController.CreacionMasivaEventos)
 
 
-router.put("/:eventId", authToken, eventsController.ActualizarEvento)
+router.put("/:eventoId", authToken, eventsController.ActualizarEvento)
 
 
-router.delete("/:eventId", authToken, eventsController.EliminarEvento);
+router.delete("/:eventoId", authToken, eventsController.EliminarEvento);
 
 
 
