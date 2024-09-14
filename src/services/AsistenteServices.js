@@ -5,16 +5,16 @@ const moment = require('moment');
 const ObtenerAsistentes = async() => { 
 
     const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM assistance');
-    return result
+    const resultado = await connection.query('SELECT * FROM assistance');
+    return resultado
 
 } 
 
 const ObtenerAsistentesPorEvento = async (eventId) => {
 
     const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventId]);
-    return result
+    const resultado = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventId]);
+    return resultado
 
   };
 
@@ -22,8 +22,8 @@ const ObtenerAsistentesPorEvento = async (eventId) => {
 const ObtenerAsistente = async (asistenteId) => {
 
 const connection = await getConnection();
-const result = await connection.query('SELECT * FROM assistance WHERE assistance_id = ?', [asistenteId]);
-return result
+const resultado = await connection.query('SELECT * FROM assistance WHERE assistance_id = ?', [asistenteId]);
+return resultado
 
 };
 
@@ -31,8 +31,8 @@ return result
 const ObtenerAsistentesPorUsuario = async (userId) => {
 
     const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [userId]);
-    return result
+    const resultado = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [userId]);
+    return resultado
     
 };
 

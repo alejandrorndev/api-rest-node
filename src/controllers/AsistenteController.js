@@ -4,8 +4,8 @@ const eventServices = require("../services/EventoServices")
 const ObtenerAsistentes = async (req,res) => {
     
     try{
-        const result = await services.ObtenerAsistentes();
-        res.send( { status: 'OK', data: result})
+        const resultado = await services.ObtenerAsistentes();
+        res.send( { status: 'OK', data: resultado})
     } catch (error){
         res.status(500);
         res.send(error.message)
@@ -17,8 +17,8 @@ const ObtenerAsistente = async (req,res) => {
     
     try{
         const { asistenteId } = req.params
-        const result = await services.ObtenerAsistente(asistenteId);
-        res.send( { status: 'OK', data: result})
+        const resultado = await services.ObtenerAsistente(asistenteId);
+        res.send( { status: 'OK', data: resultado})
     } catch (error){
         res.status(500);
         res.send(error.message)
@@ -30,8 +30,8 @@ const ObtenerAsistentesPorEvento = async (req,res) => {
     
   try{
       const { eventId } = req.params
-      const result = await services.ObtenerAsistentesPorEvento(eventId);
-      res.send( { status: 'OK', data: result})
+      const resultado = await services.ObtenerAsistentesPorEvento(eventId);
+      res.send( { status: 'OK', data: resultado})
   } catch (error){
       res.status(500);
       res.send(error.message)
@@ -43,8 +43,8 @@ const ObtenerAsistentesPorUsuario = async (req,res) => {
     
   try{
       const { userId } = req.params
-      const result = await services.ObtenerAsistentesPorUsuario(userId);
-      res.send( { status: 'OK', data: result})
+      const resultado = await services.ObtenerAsistentesPorUsuario(userId);
+      res.send( { status: 'OK', data: resultado})
   } catch (error){
       res.status(500);
       res.send(error.message)
@@ -57,8 +57,8 @@ const RegistrarAsistente = async (req,res) => {
     try {
 
         const assistance  = req.body
-        const result = await services.RegistrarAsistente(assistance)
-        res.send( { status: 'OK', data: result})
+        const resultado = await services.RegistrarAsistente(assistance)
+        res.send( { status: 'OK', data: resultado})
 
       } catch (e) {
         console.log(e)
@@ -103,9 +103,9 @@ const ObtenerAsistenciaDiaria = async (req,res) => {
   try {
     
     const events = await eventServices.ObtenerEventos()
-    const results = await services.CalcularAsistenciaDiaria( events )
+    const resultados = await services.CalcularAsistenciaDiaria( events )
     
-    res.send( { status: 'OK', data: results})
+    res.send( { status: 'OK', data: resultados})
 
   } catch (e) {
     console.log(e)
