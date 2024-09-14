@@ -24,7 +24,7 @@ const createEvent = async (event) => {
     const date_time = new Date(dateToday)
     const user = await UsuarioServices.getUserByEmail(event.email);
     const coordenates = await getCoordenates(event.location)
-
+    
     const eventToRegister = {
         user_id: user[0].user_id,
         name: event.name,
@@ -32,7 +32,7 @@ const createEvent = async (event) => {
         created_date: date_time,
         location: coordenates[0] + ',' + coordenates [1],
         assistance: 0,
-        date: event.date
+        event_date: event.date
     }
 
     const connection = await getConnection();
@@ -85,7 +85,7 @@ const updateEvent = async (eventId, event) => {
     const date_time = new Date(dateToday)
     const user = await UsuarioServices.getUserByEmail(event.email);
     const coordenates = await getCoordenates(event.location)
-    
+
     if (event.user_id){
 
         const eventToRegister = {
@@ -94,8 +94,8 @@ const updateEvent = async (eventId, event) => {
             description: event.description,
             created_date: date_time,
             location: coordenates[0] + ',' + coordenates [1],
-            assistance: 0,
-            date: event.date
+            assistance: event.assistance,
+            event_date: event.event_date
         }
 
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
@@ -110,7 +110,7 @@ const updateEvent = async (eventId, event) => {
             created_date: date_time,
             location: coordenates[0] + ',' + coordenates [1],
             assistance: 0,
-            date: event.date
+            event_date: event.date
         }
 
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
@@ -130,6 +130,7 @@ const deleteEvent =  async (eventId) => {
     connection.query(sql, eventId)
     console.log("Evento eliminado exitosamente, ID:", eventId)
 }
+
 
 
 const getCoordenates = async (address) => {

@@ -42,6 +42,11 @@ const getNearLocationsFromEvent = async (req,res) => {
   try{
       const { eventId, range } = req.body
       const event = await EventoServices.getEvent(eventId)
+
+      if (event.length === 0) {
+        return res.status(404).json({ message: "El evento no existe" });
+    }
+   
       const result = await EventoServices.getNearLocationsFromEvent(event[0].location, range);
       res.send( { status: 'OK', data: result})
   } catch (error){
