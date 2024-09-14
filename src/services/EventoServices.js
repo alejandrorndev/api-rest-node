@@ -42,41 +42,55 @@ const CrearEvento = async (event) => {
 } 
 
 const CreacionMasivaEventos = async (file) => {
-
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(file);
 
     const worksheet = workbook.worksheets[0];
 
     worksheet.eachRow({ includeEmpty: true }, async (row, rowNumber) => {
-      if (rowNumber !== 1) {
+      if (rowNumber !== 1) {  // Omitir la primera fila (encabezados)
 
         const dateToday = Date.now();
-        const date_time = new Date(dateToday)
+        const date_time = new Date(dateToday);
     
-        const [emptydata, email, name, description, location, date] = row.values;
+        const [emptydata, email, name, description, location, event_date] = row.values; 
+        if (!email) {
+          console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
+          return;
+        }
+
         const user = await UsuarioServices.ObtenerUsuarioPorEmail(email);
         
-        const coordenates = await getCoordenates(location)
+        if (!user || user.length === 0) {
+          console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
+          return;
+        }
+
+        console.log("Usuario encontrado:", user[0]);
+
+        const coordenates = await getCoordenates(location);
 
         const eventToRegister = {
             user_id: user[0].user_id,
             name,
             description,
             created_date: date_time,
-            location: coordenates[0] + ',' + coordenates [1],
+            location: `${coordenates[0]},${coordenates[1]}`,
             assistance: 0,
-            date
-        }
+            event_date
+        };
 
         const connection = await getConnection();
         const sql = `INSERT INTO events SET ?`;
-        connection.query(sql, [eventToRegister])
+        connection.query(sql, [eventToRegister]);
 
+        console.log(`Evento registrado para el usuario ${user[0].user_id} en la fila ${rowNumber}`);
       }
     });
+};
 
-}
+
+
 
 function FormatearFecha(dateString) {
     const [year, month, day] = dateString.split('-').map(Number);
