@@ -22,9 +22,9 @@ const CrearEvento = async (event) => {
 
     const dateToday = Date.now();
     const date_time = new Date(dateToday)
-    const user = await UsuarioServices.getUserByEmail(event.email);
+    const user = await UsuarioServices.ObtenerUsuarioPorEmail(event.email);
     const coordenates = await getCoordenates(event.location)
-    
+    console.log(" event.date:", event.date)
     const eventToRegister = {
         user_id: user[0].user_id,
         name: event.name,
@@ -55,7 +55,7 @@ const CreacionMasivaEventos = async (file) => {
         const date_time = new Date(dateToday)
     
         const [emptydata, email, name, description, location, date] = row.values;
-        const user = await UsuarioServices.getUserByEmail(email);
+        const user = await UsuarioServices.ObtenerUsuarioPorEmail(email);
         
         const coordenates = await getCoordenates(location)
 
@@ -78,14 +78,27 @@ const CreacionMasivaEventos = async (file) => {
 
 }
 
+function FormatearFecha(dateString) {
+    const [year, month, day] = dateString.split('-').map(Number);
+    
+    // Crear una fecha con el último día del mes
+    const lastDayOfMonth = new Date(year, month, 0).getDate();
+    
+    // Ajustar el día si es mayor que el último día del mes
+    const correctedDay = Math.min(day, lastDayOfMonth);
+
+    // Devolver la fecha corregida en formato YYYY-MM-DD
+    return `${year}-${String(month).padStart(2, '0')}-${String(correctedDay).padStart(2, '0')} 00:00:00`;
+}
+
 const ActualizarEvento = async (eventoId, event) => { 
 
 
     const dateToday = Date.now();
     const date_time = new Date(dateToday)
-    const user = await UsuarioServices.getUserByEmail(event.email);
+    const user = await UsuarioServices.ObtenerUsuarioPorEmail(event.email);
     const coordenates = await getCoordenates(event.location)
-
+    
     if (event.user_id){
 
         const eventToRegister = {
@@ -101,8 +114,11 @@ const ActualizarEvento = async (eventoId, event) => {
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
         const connection = await getConnection();
         connection.query(sql, [eventToRegister, eventoId])
-        console.log("Evento actualizado exitosamente ID:", eventoId)
+        console.log("Evento actualizado dentro del if exitosamente ID:", eventoId)
     } else {
+        const fechaformateada = await FormatearFecha(event.date)
+
+        console.log(" fechaformateada:", fechaformateada)
         const eventToRegister = {
             user_id: user[0].user_id,
             name: event.name,
@@ -110,7 +126,7 @@ const ActualizarEvento = async (eventoId, event) => {
             created_date: date_time,
             location: coordenates[0] + ',' + coordenates [1],
             assistance: 0,
-            event_date: event.date
+            event_date: fechaformateada
         }
 
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
@@ -124,14 +140,13 @@ const ActualizarEvento = async (eventoId, event) => {
 
 
 } 
+
 const EliminarEvento =  async (eventoId) => { 
     const sql = `DELETE FROM events WHERE event_id = ?`;
     const connection = await getConnection();
     connection.query(sql, eventoId)
     console.log("Evento eliminado exitosamente, ID:", eventoId)
 }
-
-
 
 const getCoordenates = async (address) => {
 
