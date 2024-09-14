@@ -17,13 +17,13 @@ router.get("/", authToken, eventsController.getAllEvents)
 router.get("/:eventId", authToken, eventsController.getEvent)
 
 
-router.post("/LugaresCercanos", authToken, eventsController.getNearLocations)
+router.post("/lugares-cercanos", authToken, eventsController.getNearLocations)
 
 
-router.post("/LugaresCercanosAlEvento", authToken, eventsController.getNearLocationsFromEvent)
+router.post("/lugares-cercanos-al-evento", authToken, eventsController.getNearLocationsFromEvent)
 
 
-router.post("/CargueMasivo", authToken, upload.single('file'),  eventsController.massiveCreationEvents)
+router.post("/cargue-masivo", authToken, upload.single('file'),  eventsController.massiveCreationEvents)
 
 
 router.put("/:eventId", authToken, eventsController.updateEvent)
