@@ -3,20 +3,20 @@ const UsuarioServices = require("../services/UsuarioServices")
 const ExcelJS = require('exceljs');
 const axios = require('axios');
 
-const getAllEvents = async () => { 
+const ObtenerEventos = async () => { 
 
     const connection = await getConnection();
     const result = await connection.query('SELECT * FROM events');
     return result
 
 } 
-const getEvent = async (eventId) => {
+const ObtenerEvento = async (eventId) => {
 
     const connection = await getConnection();
     const result = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventId]);
     return result
 }
-const createEvent = async (event) => { 
+const CrearEvento = async (event) => { 
 
     const sql = `INSERT INTO events SET ?`;
 
@@ -41,7 +41,7 @@ const createEvent = async (event) => {
 
 } 
 
-const massiveCreationEvents = async (file) => {
+const CreacionMasivaEventos = async (file) => {
 
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(file);
@@ -78,7 +78,7 @@ const massiveCreationEvents = async (file) => {
 
 }
 
-const updateEvent = async (eventId, event) => { 
+const ActualizarEvento = async (eventId, event) => { 
 
 
     const dateToday = Date.now();
@@ -124,7 +124,7 @@ const updateEvent = async (eventId, event) => {
 
 
 } 
-const deleteEvent =  async (eventId) => { 
+const EliminarEvento =  async (eventId) => { 
     const sql = `DELETE FROM events WHERE event_id = ?`;
     const connection = await getConnection();
     connection.query(sql, eventId)
@@ -150,7 +150,7 @@ const getCoordenates = async (address) => {
 
 }
 
-const getNearLocations = async (lon, lat, range) => {
+const UbicacionesCercanas = async (lon, lat, range) => {
 
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json`;
     const params = {
@@ -170,14 +170,14 @@ const getNearLocations = async (lon, lat, range) => {
 }
 
 
-const getNearLocationsFromEvent = async (coordenates, range) => {
+const ObtenerUbicacionesCercanasAlEvento = async (coordenates, range) => {
 
     try {
 
         let listCoordenates = coordenates.split(',');
         let lon = parseFloat(listCoordenates[0]);
         let lat = parseFloat(listCoordenates[1]);
-        const response = await getNearLocations(lon, lat, range)
+        const response = await UbicacionesCercanas(lon, lat, range)
         return response;
     } catch (error) {
         console.error(error);
@@ -185,13 +185,13 @@ const getNearLocationsFromEvent = async (coordenates, range) => {
 }
 module.exports = {
 
-    getAllEvents,
-    getEvent,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-    massiveCreationEvents,
-    getNearLocations,
-    getNearLocationsFromEvent
+    ObtenerEventos,
+    ObtenerEvento,
+    CrearEvento,
+    ActualizarEvento,
+    EliminarEvento,
+    CreacionMasivaEventos,
+    UbicacionesCercanas,
+    ObtenerUbicacionesCercanasAlEvento
 
 }

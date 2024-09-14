@@ -1,9 +1,9 @@
 const EventoServices = require('../services/EventoServices')
 
-const getAllEvents = async (req,res) => {
+const ObtenerEventos = async (req,res) => {
     
     try{
-        const result = await EventoServices.getAllEvents();
+        const result = await EventoServices.ObtenerEventos();
         res.send( { status: 'OK', data: result})
     } catch (error){
         res.status(500);
@@ -12,11 +12,11 @@ const getAllEvents = async (req,res) => {
 
 }
 
-const getEvent = async (req,res) => {
+const ObtenerEvento = async (req,res) => {
     
     try{
         const { eventId } = req.params
-        const result = await EventoServices.getEvent(eventId);
+        const result = await EventoServices.ObtenerEvento(eventId);
         res.send( { status: 'OK', data: result})
     } catch (error){
         res.status(500);
@@ -25,11 +25,11 @@ const getEvent = async (req,res) => {
 
 }
 
-const getNearLocations = async (req,res) => {
+const UbicacionesCercanas = async (req,res) => {
 
   try{
       const { lon, lat, range } = req.body
-      const result = await EventoServices.getNearLocations(lon, lat, range);
+      const result = await EventoServices.UbicacionesCercanas(lon, lat, range);
       res.send( { status: 'OK', data: result})
   } catch (error){
       res.status(500);
@@ -37,17 +37,17 @@ const getNearLocations = async (req,res) => {
   }
 }
 
-const getNearLocationsFromEvent = async (req,res) => {
+const ObtenerUbicacionesCercanasAlEvento = async (req,res) => {
 
   try{
       const { eventId, range } = req.body
-      const event = await EventoServices.getEvent(eventId)
+      const event = await EventoServices.ObtenerEvento(eventId)
 
       if (event.length === 0) {
         return res.status(404).json({ message: "El evento no existe" });
     }
    
-      const result = await EventoServices.getNearLocationsFromEvent(event[0].location, range);
+      const result = await EventoServices.ObtenerUbicacionesCercanasAlEvento(event[0].location, range);
       res.send( { status: 'OK', data: result})
   } catch (error){
       res.status(500);
@@ -55,13 +55,12 @@ const getNearLocationsFromEvent = async (req,res) => {
   }
 }
 
-
-const createEvent = (req,res) => {
+const CrearEvento = (req,res) => {
 
     try {
 
         const event  = req.body
-        EventoServices.createEvent(event)
+        EventoServices.CrearEvento(event)
         res.send( { status: 'OK', data: event})
 
       } catch (e) {
@@ -71,14 +70,14 @@ const createEvent = (req,res) => {
 
 }
 
-const massiveCreationEvents = async (req,res) => {
+const CreacionMasivaEventos = async (req,res) => {
   try {
 
     if (!req.file) {
       return res.status(400).send('No se ha enviado ningún archivo');
     }
 
-    EventoServices.massiveCreationEvents(req.file.buffer)
+    EventoServices.CreacionMasivaEventos(req.file.buffer)
     res.status(200).send({Status: 'OK', Message: 'Archivo Excel procesado correctamente'});
 
   } catch (e){
@@ -87,13 +86,13 @@ const massiveCreationEvents = async (req,res) => {
   }
 }
 
-const updateEvent = (req,res) => {
+const ActualizarEvento = (req,res) => {
 
     try {
 
         const { eventId } = req.params
         const event  = req.body
-        EventoServices.updateEvent(eventId, event)
+        EventoServices.ActualizarEvento(eventId, event)
         res.send( { status: 'OK', data: event})
 
       } catch (e) {
@@ -103,12 +102,12 @@ const updateEvent = (req,res) => {
 
 }
 
-const deleteEvent = (req,res) => {
+const EliminarEvento = (req,res) => {
 
      try {
 
         const { eventId } = req.params
-        EventoServices.deleteEvent(eventId)
+        EventoServices.EliminarEvento(eventId)
         res.send( { status: 'OK', data: "Evento eliminado exitosamente"})
 
       } catch (e) {
@@ -120,12 +119,12 @@ const deleteEvent = (req,res) => {
 
 
 module.exports = {
-    getAllEvents,
-    getEvent,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-    massiveCreationEvents,
-    getNearLocations,
-    getNearLocationsFromEvent
+    ObtenerEventos,
+    ObtenerEvento,
+    CrearEvento,
+    ActualizarEvento,
+    EliminarEvento,
+    CreacionMasivaEventos,
+    UbicacionesCercanas,
+    ObtenerUbicacionesCercanasAlEvento
 }
