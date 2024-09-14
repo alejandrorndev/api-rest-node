@@ -103,8 +103,9 @@ const ObtenerAsistenciaDiaria = async (req,res) => {
   try {
     
     const events = await eventServices.ObtenerEventos()
-    const resultados = await services.CalcularAsistenciaDiaria( events )
     
+    const resultados = await services.CalcularAsistenciaDiaria( events )
+
     res.send( { status: 'OK', data: resultados})
 
   } catch (e) {

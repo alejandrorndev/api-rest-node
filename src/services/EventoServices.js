@@ -117,8 +117,6 @@ const ActualizarEvento = async (eventoId, event) => {
         console.log("Evento actualizado dentro del if exitosamente ID:", eventoId)
     } else {
         const fechaformateada = await FormatearFecha(event.date)
-
-        console.log(" fechaformateada:", fechaformateada)
         const eventToRegister = {
             user_id: user[0].user_id,
             name: event.name,
@@ -207,6 +205,7 @@ module.exports = {
     EliminarEvento,
     CreacionMasivaEventos,
     UbicacionesCercanas,
-    ObtenerUbicacionesCercanasAlEvento
+    ObtenerUbicacionesCercanasAlEvento,
+    FormatearFecha
 
 }

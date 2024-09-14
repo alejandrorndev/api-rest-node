@@ -1,6 +1,8 @@
 const { getConnection } = require('../basededatos/mysql')
 const eventService = require("./EventoServices")
 const moment = require('moment');
+require('moment/locale/es');
+moment.locale('es');   
 
 const ObtenerAsistentes = async() => { 
 
@@ -44,9 +46,7 @@ const RegistrarAsistente = async (assistance) => {
         date: assistance.date
     }
 
-    const event = (await eventService.getEvent(assistance.eventoId))[0]
-
-    //console.log(event)
+    const event = (await eventService.ObtenerEvento(assistance.eventoId))[0]
 
     if (event){
         const eventToUpdate = {
@@ -60,7 +60,7 @@ const RegistrarAsistente = async (assistance) => {
             event_date: event.event_date
         }
     
-        eventService.updateEvent(event.event_id, eventToUpdate)
+        eventService.ActualizarEvento(event.event_id, eventToUpdate)
         
         const sql = `INSERT INTO assistance SET ?`;
         const connection = await getConnection();
@@ -76,12 +76,16 @@ const RegistrarAsistente = async (assistance) => {
 } 
 
 const ActualizarAsistente = async (asistenteId, assistance) => { 
+   
+    const Fecha = await eventService.FormatearFecha(assistance.date)
 
+    console.log(Fecha)
     const assistanceToRegister ={
         event_id: assistance.eventoId,
         user_id: assistance.usuarioId,
-        date: assistance.date
+        date: Fecha
     }
+  
     const sql = `UPDATE assistance SET ? WHERE assistance_id = ?`;
     const connection = await getConnection();
     connection.query(sql, [assistanceToRegister, asistenteId])
@@ -96,24 +100,29 @@ const EliminarAsistente =  async (asistenteId) => {
 
 
 const CalcularAsistenciaDiaria = async (events) => {
-
     let dailyAssistance = {
         'Domingo': 0,
         'Lunes': 0,
         'Martes': 0,
-        'Miercoles': 0,
+        'Miércoles': 0,
         'Jueves': 0,
         'Viernes': 0,
-        'Sabado': 0
+        'Sábado': 0
     };
 
     events.forEach(event => {
-        let day = moment(event.date).format('dddd');
-        dailyAssistance[day] += event.assistance;
+        let day = moment(event.event_date).format('dddd');
+        day = day.charAt(0).toUpperCase() + day.slice(1);
+        if (!dailyAssistance.hasOwnProperty(day)) {
+            console.warn(`Día no encontrado: ${day}`);
+            return;
+        }
+        dailyAssistance[day] += event.assistance || 0;
     });
 
-    return dailyAssistance
-}
+    return dailyAssistance;
+};
+
 
 module.exports = {
 
