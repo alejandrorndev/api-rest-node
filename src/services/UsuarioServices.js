@@ -2,13 +2,13 @@ const { getConnection } = require("../basededatos/mysql");
 const bcrypt = require("../utils/CifrarContrasena");
 const jwt = require("jsonwebtoken");
 
-const getAllUsers = async () => {
+const ObtenerUsuarios = async () => {
   const connection = await getConnection();
   const result = await connection.query("SELECT * FROM users");
   return result;
 };
 
-const getUser = async (userId) => {
+const ObtenerUsuario = async (userId) => {
   const connection = await getConnection();
   const result = await connection.query(
     "SELECT * FROM users WHERE user_id = ?",
@@ -17,7 +17,7 @@ const getUser = async (userId) => {
   return result;
 };
 
-const getUserByEmail = async (email) => {
+const ObtenerUsuarioPorEmail = async (email) => {
   const connection = await getConnection();
   const result = await connection.query("SELECT * FROM users WHERE email = ?", [
     email,
@@ -25,13 +25,13 @@ const getUserByEmail = async (email) => {
   return result;
 };
 
-const registerUser = async (user) => {
+const RegistrarUsuario = async (user) => {
   const { email, password, name } = user;
 
   const date = Date.now();
   const date_time = new Date(date);
 
-  const userExist = await getUserByEmail(email);
+  const userExist = await ObtenerUsuarioPorEmail(email);
 
   if (userExist.length === 0) {
     const userRegistered = {
@@ -49,10 +49,10 @@ const registerUser = async (user) => {
   return "El usuario ya existe";
 };
 
-const login = async (user) => {
+const InicioDeSesion = async (user) => {
   const { email, password } = user;
 
-  const databaseUser = await getUserByEmail(email);
+  const databaseUser = await ObtenerUsuarioPorEmail(email);
 
   if (databaseUser) {
     const validPassword = bcrypt.compare(password, databaseUser[0].password);
@@ -81,8 +81,8 @@ const login = async (user) => {
   return "Usuario no encontrado";
 };
 
-const updateUser = async (userId, user) => {
-  const databaseUser = await getUserByEmail(user.email);
+const ActualizarUsuario = async (userId, user) => {
+  const databaseUser = await ObtenerUsuarioPorEmail(user.email);
 
   const userRegistered = {
     user_id: userId,
@@ -97,7 +97,7 @@ const updateUser = async (userId, user) => {
   connection.query(sql, [userRegistered, userId]);
   console.log("Usuario actualizado exitosamente ID:", userId);
 };
-const deleteUser = async (userId) => {
+const EliminarUsuario = async (userId) => {
   const sql = `DELETE FROM users WHERE user_id = ?`;
   const connection = await getConnection();
   connection.query(sql, userId);
@@ -105,11 +105,11 @@ const deleteUser = async (userId) => {
 };
 
 module.exports = {
-  getAllUsers,
-  getUserByEmail,
-  getUser,
-  registerUser,
-  updateUser,
-  deleteUser,
-  login,
+  ObtenerUsuarios,
+  ObtenerUsuarioPorEmail,
+  ObtenerUsuario,
+  RegistrarUsuario,
+  ActualizarUsuario,
+  EliminarUsuario,
+  InicioDeSesion,
 };
