@@ -37,7 +37,7 @@ CREATE TABLE pruebatecnica.assistance (
   CONSTRAINT event_assistance
     FOREIGN KEY (event_id)
     REFERENCES pruebatecnica.events (event_id)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT user_assistance
     FOREIGN KEY (user_id)
