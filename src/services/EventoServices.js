@@ -55,14 +55,14 @@ const CreacionMasivaEventos = async (file) => {
     
         const [emptydata, email, name, description, location, event_date] = row.values; 
         if (!email) {
-          console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
+         // console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
           return;
         }
 
         const user = await UsuarioServices.ObtenerUsuarioPorEmail(email);
         
         if (!user || user.length === 0) {
-          console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
+          //console.warn(`Usuario no encontrado para el email: ${email} en la fila ${rowNumber}`);
           return;
         }
 
