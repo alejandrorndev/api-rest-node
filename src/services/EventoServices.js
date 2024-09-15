@@ -66,7 +66,7 @@ const CreacionMasivaEventos = async (file) => {
           return;
         }
 
-        console.log("Usuario encontrado:", user[0]);
+        //console.log("Usuario encontrado:", user[0]);
 
         const coordenates = await getCoordenates(location);
 
@@ -84,7 +84,7 @@ const CreacionMasivaEventos = async (file) => {
         const sql = `INSERT INTO events SET ?`;
         connection.query(sql, [eventToRegister]);
 
-        console.log(`Evento registrado para el usuario ${user[0].user_id} en la fila ${rowNumber}`);
+        //console.log(`Evento registrado para el usuario ${user[0].user_id} en la fila ${rowNumber}`);
       }
     });
 };
