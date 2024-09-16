@@ -109,11 +109,14 @@ const ActualizarAsistente = async (asistenteId, assistance) => {
     try {
         const connection = await getConnection();
 
-      
+        console.log("assistance.date",assistance)
         const Fecha = await eventService.FormatearFecha(assistance.date);
 
         
         const eventResult = await connection.query('SELECT * FROM events WHERE event_id = ?', [assistance.eventoId]);
+        
+       
+        
         if (eventResult.length === 0) {
             const error = new Error('El evento asociado no existe');
             error.status = 404;
@@ -129,7 +132,7 @@ const ActualizarAsistente = async (asistenteId, assistance) => {
        
         const updateResult = await connection.query('UPDATE assistance SET ? WHERE assistance_id = ?', [assistanceToRegister, asistenteId]);
 
-
+      
         if (updateResult.affectedRows === 0) {
             const error = new Error('Asistente no encontrado o no actualizado');
             error.status = 404;

@@ -100,6 +100,7 @@ const ActualizarAsistente = async (req, res) => {
   try {
       const { asistenteId } = req.params;
       const assistance = req.body;
+      console.log("assistance",assistance)
 
       const result = await services.ActualizarAsistente(asistenteId, assistance);
 
@@ -112,9 +113,6 @@ const ActualizarAsistente = async (req, res) => {
       }
   }
 };
-
-
-
 
 const EliminarAsistente = async (req, res) => {
   try {

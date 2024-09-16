@@ -574,7 +574,7 @@ router.get("/evento/:eventoId",validarObtenerAsistentesPorEvento, Autenticacion,
  * @swagger
  * /api/asistentes/{asistenteId}:
  *   put:
- *     summary: Actualizar los detalles de un asistente
+ *     summary: Actualizar información de un asistente
  *     tags: [Asistentes]
  *     security:
  *       - Bearer: []
@@ -584,31 +584,31 @@ router.get("/evento/:eventoId",validarObtenerAsistentesPorEvento, Autenticacion,
  *         required: true
  *         schema:
  *           type: integer
- *           description: ID del asistente que se actualizará
- *           example: 1
- *       - in: body
- *         name: body
- *         description: Datos para actualizar el asistente
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             eventoId:
- *               type: integer
- *               description: ID del evento al que el asistente está asociado
- *               example: 4
- *             usuarioId:
- *               type: integer
- *               description: ID del usuario asociado con la asistencia
- *               example: 4
- *             date:
- *               type: string
- *               format: date
- *               description: Fecha de la asistencia (formato YYYY-MM-DD)
- *               example: "2024-09-09"
+ *         description: ID del asistente a actualizar
+ *         example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               eventoId:
+ *                 type: integer
+ *                 description: ID del evento asociado al asistente.
+ *                 example: 62
+ *               usuarioId:
+ *                 type: integer
+ *                 description: ID del usuario que asistió al evento.
+ *                 example: 2
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de la asistencia en formato YYYY-MM-DD.
+ *                 example: "2024-11-09"
  *     responses:
  *       200:
- *         description: Asistente actualizado exitosamente
+ *         description: Asistencia actualizada exitosamente
  *         content:
  *           application/json:
  *             schema:
@@ -616,34 +616,31 @@ router.get("/evento/:eventoId",validarObtenerAsistentesPorEvento, Autenticacion,
  *               properties:
  *                 status:
  *                   type: string
- *                   example: "OK"
+ *                   example: OK
  *                 data:
  *                   type: object
  *                   properties:
  *                     status:
  *                       type: string
- *                       example: "OK"
+ *                       example: OK
  *                     message:
  *                       type: string
- *                       example: "Asistencia actualizada exitosamente"
+ *                       example: Asistencia actualizada exitosamente
  *                     data:
  *                       type: object
  *                       properties:
- *                         eventoId:
+ *                         event_id:
  *                           type: integer
- *                           description: ID del evento actualizado
- *                           example: 4
- *                         usuarioId:
+ *                           example: 62
+ *                         user_id:
  *                           type: integer
- *                           description: ID del usuario actualizado
- *                           example: 4
+ *                           example: 2
  *                         date:
  *                           type: string
  *                           format: date
- *                           description: Fecha de la asistencia actualizada
- *                           example: "2024-09-09"
+ *                           example: "2024-11-09 00:00:00"
  *       400:
- *         description: Error en la validación de los parámetros
+ *         description: Error en la validación de los parámetros. Puede ser que alguno de los IDs no sea un número entero positivo o que la fecha no sea válida.
  *         content:
  *           application/json:
  *             schema:
@@ -656,31 +653,19 @@ router.get("/evento/:eventoId",validarObtenerAsistentesPorEvento, Autenticacion,
  *                     properties:
  *                       msg:
  *                         type: string
- *                         description: Mensaje de error
- *                         example: "El ID del evento debe ser un número entero positivo"
- *       401:
- *         description: No autorizado. El token es inválido o no fue proporcionado.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Mensaje de error
- *                   example: "Token no proporcionado o inválido"
+ *                         description: Mensaje de error sobre la validación
+ *                         example: El ID del asistente debe ser un número entero positivo
  *       404:
- *         description: Error específico de recursos no encontrados
+ *         description: Asistente no encontrado o no actualizado
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 error:
  *                   type: string
- *                   description: Mensaje de error
- *                   example: 
- *                     "El evento asociado no existe"
+ *                   description: Descripción del error
+ *                   example: Asistente no encontrado o no actualizado
  *       500:
  *         description: Error interno del servidor
  *         content:
@@ -688,10 +673,10 @@ router.get("/evento/:eventoId",validarObtenerAsistentesPorEvento, Autenticacion,
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 error:
  *                   type: string
- *                   description: Mensaje del error
- *                   example: "Error al actualizar el asistente"
+ *                   description: Descripción del error
+ *                   example: Error interno del servidor
  */
 
 router.put("/:asistenteId",validarActualizacionAsistente, Autenticacion, AsistenteController.ActualizarAsistente)
