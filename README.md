@@ -26,17 +26,17 @@ MAPBOX_ACCESS_TOKEN=Token de acceso para el servicio de Mapbox.
 
 1. **Clonar el repositorio:**
 
-   ```bash
+   ```
    git clone https://github.com/alejandrorndev/api-rest-node.git
       ```
 2. **Primero se debe instalar las dependencias**
 
-  ```bash
+  ```
   npm install
       ```
 
 3. **Segundo se debe ejecutar el servidors**
 
-  ```bash
+  ```
   npm run dev
       ```
