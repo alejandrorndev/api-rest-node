@@ -21,14 +21,8 @@ Esta API RESTful proporciona un conjunto de endpoints para gestionar usuarios, e
    git clone https://github.com/alejandrorndev/api-rest-node.git
    ```
 
+2. **Instalar las dependencias:**
+   ```bash
+   npm install
 
-2. **Primero se debe instalar las dependencias**
 
-  ```bash
-  npm install
-
-3. **Segundo se debe ejecutar el servidors**
-
-  ```bash
-  npm run dev
-      
