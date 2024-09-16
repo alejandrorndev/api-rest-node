@@ -13,12 +13,30 @@ const ObtenerAsistentes = async() => {
 } 
 
 const ObtenerAsistentesPorEvento = async (eventoId) => {
+    try {
+        const connection = await getConnection();
 
-    const connection = await getConnection();
-    const resultado = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventoId]);
-    return resultado
+        const resultado = await connection.query('SELECT * FROM assistance WHERE event_id = ?', [eventoId]);
 
-  };
+        if (!resultado) {
+            const error = new Error('No se encontraron asistentes para este evento');
+            error.status = 404;
+            throw error;
+        }
+        
+        let asistentes = Array.isArray(resultado) ? resultado : [resultado];
+       
+        if (asistentes.length === 0) {
+            const error = new Error('No se encontraron asistentes para este evento');
+            error.status = 404;
+            throw error;
+        }
+
+        return resultado;
+    } catch (error) {
+        throw error;
+    }
+};
 
 
 const ObtenerAsistente = async (asistenteId) => {
@@ -31,12 +49,24 @@ return resultado
 
 
 const ObtenerAsistentesPorUsuario = async (usuarioId) => {
+    try {
+        const connection = await getConnection();
 
-    const connection = await getConnection();
-    const resultado = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [usuarioId]);
-    return resultado
-    
+        const [resultado] = await connection.query('SELECT * FROM assistance WHERE user_id = ?', [usuarioId]);
+
+        if (resultado.length === 0) {
+            const error = new Error('No se encontraron asistentes para este usuario');
+            error.status = 404;
+            throw error;
+        }
+
+        return resultado;
+    } catch (error) {
+
+        throw error;
+    }
 };
+
 
 const RegistrarAsistente = async (assistance) => { 
 
@@ -76,27 +106,72 @@ const RegistrarAsistente = async (assistance) => {
 } 
 
 const ActualizarAsistente = async (asistenteId, assistance) => { 
-   
-    const Fecha = await eventService.FormatearFecha(assistance.date)
+    try {
+        const connection = await getConnection();
 
-    console.log(Fecha)
-    const assistanceToRegister ={
-        event_id: assistance.eventoId,
-        user_id: assistance.usuarioId,
-        date: Fecha
+      
+        const Fecha = await eventService.FormatearFecha(assistance.date);
+
+        
+        const eventResult = await connection.query('SELECT * FROM events WHERE event_id = ?', [assistance.eventoId]);
+        if (eventResult.length === 0) {
+            const error = new Error('El evento asociado no existe');
+            error.status = 404;
+            throw error;
+        }
+
+        const assistanceToRegister = {
+            event_id: assistance.eventoId,
+            user_id: assistance.usuarioId,
+            date: Fecha
+        };
+        
+       
+        const updateResult = await connection.query('UPDATE assistance SET ? WHERE assistance_id = ?', [assistanceToRegister, asistenteId]);
+
+
+        if (updateResult.affectedRows === 0) {
+            const error = new Error('Asistente no encontrado o no actualizado');
+            error.status = 404;
+            throw error;
+        }
+
+        console.log("Asistencia actualizada exitosamente ID:", asistenteId);
+        return {
+            status: 'OK',
+            message: 'Asistencia actualizada exitosamente',
+            data: assistanceToRegister
+        };
+    } catch (error) {
+      
+        console.error('Error al actualizar la asistencia:', error.message);
+        throw error;
     }
-  
-    const sql = `UPDATE assistance SET ? WHERE assistance_id = ?`;
+};
+
+const EliminarAsistente = async (asistenteId) => { 
     const connection = await getConnection();
-    connection.query(sql, [assistanceToRegister, asistenteId])
-    console.log("Asistencia actualizada exitosamente ID:", asistenteId)
-} 
-const EliminarAsistente =  async (asistenteId) => { 
-    const sql = `DELETE FROM assistance WHERE assistance_id = ?`;
-    const connection = await getConnection();
-    connection.query(sql, asistenteId)
-    console.log("Asistencia eliminada exitosamente, ID:", asistenteId)
-}
+
+    // Primero, verifica si el asistente existe
+    const asistente = await connection.query('SELECT * FROM assistance WHERE assistance_id = ?', [asistenteId]);
+    if (asistente.length === 0) {
+        // Si no se encuentra el asistente, lanza un error 404
+        const error = new Error('Asistente no encontrado');
+        error.status = 404;
+        throw error;
+    }
+
+    // Si el asistente existe, procede a eliminarlo
+    const sql = 'DELETE FROM assistance WHERE assistance_id = ?';
+    await connection.query(sql, [asistenteId]);
+
+    console.log("Asistencia eliminada exitosamente, ID:", asistenteId);
+
+    return {
+        status: 'OK',
+        message: 'Asistencia eliminada exitosamente',
+    };
+};
 
 
 const CalcularAsistenciaDiaria = async (events) => {

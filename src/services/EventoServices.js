@@ -16,8 +16,8 @@ const ObtenerEvento = async (eventoId) => {
         const connection = await getConnection();
         const [rows] = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
         // Verifica si rows contiene datos
-        if (rows.length === 0) {
-            throw new Error(`Evento con ID ${eventoId} no encontrado`);
+        if (!rows || !Array.isArray(rows) || rows.length === 0) {
+            return { success: false, message: `Evento con ID ${eventoId} no encontrado` };
         }
 
         return rows;
@@ -136,7 +136,7 @@ const ActualizarEvento = async (eventoId, event) => {
         const sql = `UPDATE events SET ? WHERE event_id = ?`;
         const connection = await getConnection();
         connection.query(sql, [eventToRegister, eventoId])
-        console.log("Evento actualizado dentro del if exitosamente ID:", eventoId)
+        console.log("Evento actualizado exitosamente ID:", eventoId)
     } else {
         const fechaformateada = await FormatearFecha(event.date)
         const eventToRegister = {

@@ -26,31 +26,60 @@ const ObtenerAsistente = async (req,res) => {
 
 }
 
-const ObtenerAsistentesPorEvento = async (req,res) => {
-    
-  try{
-      const { eventoId } = req.params
-      const resultado = await services.ObtenerAsistentesPorEvento(eventoId);
-      res.send( { status: 'OK', data: resultado})
-  } catch (error){
-      res.status(500);
-      res.send(error.message)
+const ObtenerAsistentesPorEvento = async (req, res) => {
+    try {
+        const eventoId = parseInt(req.params.eventoId, 10);
+
+        // Verifica si el eventoId es válido
+        if (isNaN(eventoId) || eventoId < 1) {
+            return res.status(400).json({
+                message: 'ID de evento inválido'
+            });
+        }
+
+        // Obtiene los asistentes para el evento
+        const asistentes = await services.ObtenerAsistentesPorEvento(eventoId);
+
+        res.status(200).json({
+            status: 'OK',
+            data: asistentes
+        });
+    } catch (error) {
+        if (error.status === 404) {
+            res.status(404).json({
+                message: error.message
+            });
+        } else {
+            res.status(500).json({
+                message: 'Error al obtener los asistentes del evento'
+            });
+        }
+    }
+};
+
+
+const ObtenerAsistentesPorUsuario = async (req, res) => {
+  try {
+      const usuarioId = parseInt(req.params.usuarioId, 10);
+      const asistentes = await services.ObtenerAsistentesPorUsuario(usuarioId);
+
+      res.status(200).json({
+          status: 'OK',
+          data: asistentes
+      });
+  } catch (error) {
+      if (error.status === 404) {
+          res.status(404).json({
+              message: error.message
+          });
+      } else {
+          res.status(500).json({
+              message: 'Error al obtener los asistentes del usuario'
+          });
+      }
   }
+};
 
-}
-
-const ObtenerAsistentesPorUsuario = async (req,res) => {
-    
-  try{
-      const { usuarioId } = req.params
-      const resultado = await services.ObtenerAsistentesPorUsuario(usuarioId);
-      res.send( { status: 'OK', data: resultado})
-  } catch (error){
-      res.status(500);
-      res.send(error.message)
-  }
-
-}
 
 const RegistrarAsistente = async (req,res) => {
 
@@ -67,36 +96,51 @@ const RegistrarAsistente = async (req,res) => {
 
 }
 
-const ActualizarAsistente = (req,res) => {
+const ActualizarAsistente = async (req, res) => {
+  try {
+      const { asistenteId } = req.params;
+      const assistance = req.body;
 
-    try {
+      const result = await services.ActualizarAsistente(asistenteId, assistance);
 
-        const { asistenteId } = req.params
-        const  assistance  = req.body
-        services.ActualizarAsistente(asistenteId, assistance)
-        res.send( { status: 'OK', data: assistance})
-
-      } catch (e) {
-        console.log(e)
-        res.status(500).json({ error: 'Error interno del servidor' });
+      res.send({ status: 'OK', data: result });
+  } catch (e) {
+       if (e.status === 404) {
+          res.status(404).json({ error: e.message });
+      } else {
+          res.status(500).json({ error: 'Error interno del servidor' });
       }
+  }
+};
 
-}
 
-const EliminarAsistente = (req,res) => {
 
-     try {
 
-        const { asistenteId } = req.params
-        services.EliminarAsistente(asistenteId)
-        res.send( { status: 'OK', data: "Asistencia eliminada exitosamente"})
-
-      } catch (e) {
-        console.log(e)
-        res.status(500).json({ error: 'Error interno del servidor' });
+const EliminarAsistente = async (req, res) => {
+  try {
+      const { asistenteId } = req.params;
+      
+      await services.EliminarAsistente(asistenteId);
+      
+      res.status(200).json({
+          status: 'OK',
+          message: 'Asistencia eliminada exitosamente'
+      });
+  } catch (error) {
+      if (error.status === 404) {
+          res.status(404).json({
+              error: error.message || 'Asistente no encontrado'
+          });
+      } else {
+          // Maneja errores generales o internos del servidor
+          console.error('Error al eliminar el asistente:', error.message);
+          res.status(500).json({
+              error: error.message || 'Error interno del servidor'
+          });
       }
+  }
+};
 
-}
 
 const ObtenerAsistenciaDiaria = async (req,res) => {
 
