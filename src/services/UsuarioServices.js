@@ -97,12 +97,37 @@ const ActualizarUsuario = async (usuarioId, user) => {
   connection.query(sql, [userRegistered, usuarioId]);
   console.log("Usuario actualizado exitosamente ID:", usuarioId);
 };
+
 const EliminarUsuario = async (usuarioId) => {
-  const sql = `DELETE FROM users WHERE user_id = ?`;
   const connection = await getConnection();
-  connection.query(sql, usuarioId);
-  console.log("Usuario eliminado exitosamente, ID:", usuarioId);
+
+  try {
+    // Paso 1: Verificar si el usuario existe
+    const verificarUsuarioSql = `SELECT COUNT(*) AS count FROM users WHERE user_id = ?`;
+    const [resultadoVerificacion] = await connection.query(verificarUsuarioSql, [usuarioId]);
+
+    if (!Array.isArray(resultadoVerificacion) || resultadoVerificacion.length === 0 || resultadoVerificacion[0].count === undefined) {
+      return { error: `No se pudo verificar la existencia del usuario con ID ${usuarioId}` };
+    }
+
+    const { count } = resultadoVerificacion[0];
+    if (count === 0) {
+      return { error: `Usuario con ID ${usuarioId} no encontrado` };
+    }
+
+    // Paso 2: Eliminar el usuario si existe
+    const eliminarUsuarioSql = `DELETE FROM users WHERE user_id = ?`;
+    await connection.query(eliminarUsuarioSql, [usuarioId]);
+
+    return { status: "OK", message: "Usuario eliminado exitosamente" };
+
+  } catch (error) {
+    // Manejar el error sin lanzarlo, devolviendo un mensaje adecuado
+    return { error: 'Error interno del servidor' };
+  }
 };
+
+
 
 module.exports = {
   ObtenerUsuarios,

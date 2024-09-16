@@ -62,16 +62,25 @@ const ActualizarUsuario =  (req,res) => {
     res.send( { status: 'OK', data: req.body})
 }
 
-const EliminarUsuario = (req,res) => {
+const EliminarUsuario = async (req, res) => {
     try {
-        services.EliminarUsuario(req.params.usuarioId)
-        res.send( { status: 'OK', data: "Usuario eliminado exitosamente"})
-
-      } catch (e) {
-        console.log(e)
+      const result = await services.EliminarUsuario(req.params.usuarioId);
+  
+      res.status(200).json(result);
+  
+    } catch (e) {
+      console.error(e);
+  
+      if (e.message.includes('No se pudo verificar la existencia del usuario')) {
+        res.status(500).json({ error: 'Error interno del servidor' });
+      } else if (e.message.includes('Usuario con ID')) {
+        res.status(404).json({ error: e.message });
+      } else {
         res.status(500).json({ error: 'Error interno del servidor' });
       }
-}
+    }
+  };
+  
 
 
 module.exports = {

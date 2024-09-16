@@ -3,6 +3,8 @@ const express = require("express");
 const UsuariosRouter = require('./routes/UsuariosRoutes');
 const EventosRouter = require('./routes/EventosRoutes');
 const AsistenteRouter = require('./routes/AsistentesRoutes');
+const { swaggerDocs } = require('./swagger');
+
 
 
 
@@ -21,5 +23,6 @@ app.use("/api/asistentes", AsistenteRouter)
 
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`)
+    console.log(`Servidor en ejecucion en el puerto ${PORT}`)
+    swaggerDocs(app, PORT);
 });
