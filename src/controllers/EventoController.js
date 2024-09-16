@@ -12,18 +12,22 @@ const ObtenerEventos = async (req,res) => {
 
 }
 
-const ObtenerEvento = async (req,res) => {
-    
-    try{
-        const { eventoId } = req.params
-        const result = await EventoServices.ObtenerEvento(eventoId);
-        res.send( { status: 'OK', data: result})
-    } catch (error){
-        res.status(500);
-        res.send(error.message)
-    }
-
-}
+const ObtenerEvento = async (req, res) => {
+  try {
+      const eventoId = parseInt(req.params.eventoId, 10);
+      const evento = await EventoServices.ObtenerEvento(eventoId);
+      res.status(200).json({
+          status: 'OK',
+          data: evento
+      });
+  } catch (error) {
+      if (error.message.includes('no encontrado')) {
+          res.status(404).json({ message: error.message });
+      } else {
+          res.status(500).json({ message: `Error interno del servidor` });
+      }
+  }
+};
 
 const UbicacionesCercanas = async (req,res) => {
 
@@ -42,12 +46,13 @@ const ObtenerUbicacionesCercanasAlEvento = async (req,res) => {
   try{
       const { eventoId, range } = req.body
       const event = await EventoServices.ObtenerEvento(eventoId)
-
+      //console.log(event)
       if (event.length === 0) {
         return res.status(404).json({ message: "El evento no existe" });
     }
-   
-      const result = await EventoServices.ObtenerUbicacionesCercanasAlEvento(event[0].location, range);
+
+      const result = await EventoServices.ObtenerUbicacionesCercanasAlEvento(event.location, range);
+      //console.log(result)
       res.send( { status: 'OK', data: result})
   } catch (error){
       res.status(500);

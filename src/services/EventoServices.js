@@ -10,12 +10,23 @@ const ObtenerEventos = async () => {
     return result
 
 } 
-const ObtenerEvento = async (eventoId) => {
 
-    const connection = await getConnection();
-    const result = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
-    return result
-}
+const ObtenerEvento = async (eventoId) => {
+    try {
+        const connection = await getConnection();
+        const [rows] = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
+        // Verifica si rows contiene datos
+        if (rows.length === 0) {
+            throw new Error(`Evento con ID ${eventoId} no encontrado`);
+        }
+
+        return rows;
+    } catch (error) {
+        // Propaga el error al controlador
+        throw error;
+    }
+};
+
 const CrearEvento = async (event) => { 
 
     const sql = `INSERT INTO events SET ?`;
@@ -88,9 +99,6 @@ const CreacionMasivaEventos = async (file) => {
       }
     });
 };
-
-
-
 
 function FormatearFecha(dateString) {
     const [year, month, day] = dateString.split('-').map(Number);

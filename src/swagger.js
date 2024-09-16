@@ -23,7 +23,7 @@ const options = {
       },
     ],
   },
-  apis: ["src/routes/UsuariosRoutes.js"],
+  apis: ["src/routes/UsuariosRoutes.js", "src/routes/EventosRoutes.js"],
 };
 
 
