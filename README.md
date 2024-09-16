@@ -26,10 +26,9 @@ Esta API RESTful proporciona un conjunto de endpoints para gestionar usuarios, e
 
   ```bash
   npm install
-      ```
 
 3. **Segundo se debe ejecutar el servidors**
 
   ```bash
   npm run dev
-      ```
+      
