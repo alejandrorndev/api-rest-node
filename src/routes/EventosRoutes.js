@@ -337,7 +337,7 @@ router.get("/:eventoId",validarEventoId, autenticacion, EventoController.Obtener
 
 /**
  * @swagger
- * /api/lugares-cercanos:
+ * /api/eventos/lugares-cercanos:
  *   post:
  *     summary: Obtiene lugares cercanos basados en longitud, latitud y rango
  *     tags: [Eventos]
@@ -485,7 +485,7 @@ router.post("/lugares-cercanos",validarLugaresCercanos, autenticacion, EventoCon
 
 /**
  * @swagger
- * /lugares-cercanos-al-evento:
+ * /api/eventos/lugares-cercanos-al-evento:
  *   post:
  *     summary: Obtener lugares cercanos a un evento
  *     tags: [Eventos]
@@ -645,7 +645,7 @@ router.post("/lugares-cercanos-al-evento",validarLugaresCercanosAlEvento, autent
 
 /**
  * @swagger
- * /cargue-masivo:
+ * /api/eventos/cargue-masivo:
  *   post:
  *     summary: Cargue masivo de eventos desde un archivo Excel
  *     tags: [Eventos]
@@ -722,7 +722,7 @@ router.post("/cargue-masivo", upload.single('file'),validarCargueMasivo, autenti
 
 /**
  * @swagger
- * /{eventoId}:
+ * /api/eventos/{eventoId}:
  *   put:
  *     summary: Actualizar un evento por ID
  *     tags: [Eventos]
@@ -851,7 +851,7 @@ router.put("/:eventoId",validarActualizacionEvento, autenticacion, EventoControl
 
 /**
  * @swagger
- * /{eventoId}:
+ * /api/eventos/{eventoId}:
  *   delete:
  *     summary: Eliminar un evento por ID
  *     tags: [Eventos]

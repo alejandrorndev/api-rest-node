@@ -65,12 +65,10 @@ const ActualizarUsuario =  (req,res) => {
 const EliminarUsuario = async (req, res) => {
     try {
       const result = await services.EliminarUsuario(req.params.usuarioId);
-  
+      //console.log(result)
       res.status(200).json(result);
   
     } catch (e) {
-      console.error(e);
-  
       if (e.message.includes('No se pudo verificar la existencia del usuario')) {
         res.status(500).json({ error: 'Error interno del servidor' });
       } else if (e.message.includes('Usuario con ID')) {

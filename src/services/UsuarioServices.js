@@ -104,13 +104,13 @@ const EliminarUsuario = async (usuarioId) => {
   try {
     // Paso 1: Verificar si el usuario existe
     const verificarUsuarioSql = `SELECT COUNT(*) AS count FROM users WHERE user_id = ?`;
-    const [resultadoVerificacion] = await connection.query(verificarUsuarioSql, [usuarioId]);
-
+    const resultadoVerificacion = await connection.query(verificarUsuarioSql, [usuarioId]);
+    //console.log("resultadoVerificacion",resultadoVerificacion)
     if (!Array.isArray(resultadoVerificacion) || resultadoVerificacion.length === 0 || resultadoVerificacion[0].count === undefined) {
       return { error: `No se pudo verificar la existencia del usuario con ID ${usuarioId}` };
     }
 
-    const { count } = resultadoVerificacion[0];
+    const count  = resultadoVerificacion[0];
     if (count === 0) {
       return { error: `Usuario con ID ${usuarioId} no encontrado` };
     }

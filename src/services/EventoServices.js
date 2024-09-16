@@ -14,7 +14,7 @@ const ObtenerEventos = async () => {
 const ObtenerEvento = async (eventoId) => {
     try {
         const connection = await getConnection();
-        const [rows] = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
+        const rows = await connection.query('SELECT * FROM events WHERE event_id = ?', [eventoId]);
         // Verifica si rows contiene datos
         if (!rows || !Array.isArray(rows) || rows.length === 0) {
             return { success: false, message: `Evento con ID ${eventoId} no encontrado` };
