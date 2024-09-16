@@ -50,9 +50,9 @@ const ObtenerUbicacionesCercanasAlEvento = async (req,res) => {
       if (event.length === 0) {
         return res.status(404).json({ message: "El evento no existe" });
     }
-
-      const result = await EventoServices.ObtenerUbicacionesCercanasAlEvento(event.location, range);
-      //console.log(result)
+    //console.log("event.location", event[0].location)
+      const result = await EventoServices.ObtenerUbicacionesCercanasAlEvento(event[0].location, range);
+      console.log(result)
       res.send( { status: 'OK', data: result})
   } catch (error){
       res.status(500);

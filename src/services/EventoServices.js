@@ -34,8 +34,9 @@ const CrearEvento = async (event) => {
     const dateToday = Date.now();
     const date_time = new Date(dateToday)
     const user = await UsuarioServices.ObtenerUsuarioPorEmail(event.email);
+    //console.log(" user:", user)
     const coordenates = await getCoordenates(event.location)
-    console.log(" event.date:", event.date)
+ 
     const eventToRegister = {
         user_id: user[0].user_id,
         name: event.name,
