@@ -41,3 +41,7 @@ Esta API RESTful proporciona un conjunto de endpoints para gestionar usuarios, e
 
    ```bash
    npm run dev
+
+La explicación de este proyecto se encuentra en el siguiente enlace:
+
+[Enlace del video](https://drive.google.com/drive/u/1/folders/1NVhoD-6rnWKf1QFL3IZPOgkaU7NdWkce)
